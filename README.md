@@ -1,6 +1,6 @@
 # Kaggle Spaceship Titanic -- Transported Prediction
 
-This one I didn't really drive. I pointed my auto-model-trainer plugin at the competition and let it run. It explored 3 architecture classes (linear, tree_based, knn) across 8 nodes, ending on a Caruana ensemble blend. The interesting part was watching the domain research agents work out the dataset structure on their own -- the PassengerId group encoding, the Cabin deck/num/side split, and the CryoSleep-to-spend relationship (passengers in cryo sleep can't spend on amenities).
+This solution was created by [auto-model-trainer](https://github.com/Hook12aaa/auto-model-trainer), a Claude Code plugin for autonomous ML training. Given the competition objective, it explored 3 architecture classes (linear, tree_based, knn) across 8 nodes and finished on a Caruana ensemble blend. The domain research agents worked out the dataset structure on their own -- the PassengerId group encoding, the Cabin deck/num/side split, and the CryoSleep-to-spend relationship (passengers in cryo sleep can't spend on amenities).
 
 ## Competition
 - **Task:** Binary classification, predict `Transported` (boolean)
@@ -37,7 +37,7 @@ submission.csv        # winner's predictions on the test set
 ```
 
 ## Usage
-This was run with my auto-model-trainer plugin for Claude Code. Given an objective YAML, it handles data validation, feature engineering, baseline creation, experiment tree exploration, ensembling, convergence detection, and the final report -- autonomously.
+Created by the [auto-model-trainer](https://github.com/Hook12aaa/auto-model-trainer) plugin for Claude Code. Given an objective YAML, it handles data validation, feature engineering, baseline creation, experiment tree exploration, ensembling, convergence detection, and the final report -- autonomously.
 
 ```
 /auto-train objective.yaml
