@@ -1,0 +1,33 @@
+{
+  "input_data_hash": "sha256:17336d553f49ebdf6ecb266d2b5d3746e5dd308445f7c7864141c4f28d2a88d0",
+  "features_py_hash": "sha256:600196a1afe85295f5a916216bb32775e41626e12c07cf9eaab9eeaa2dc296e7",
+  "output_columns": ["Group", "GroupPosition", "GroupSize", "IsAlone", "Deck", "CabinNum", "Side", "CabinRegion", "TotalSpend", "NoSpend", "TotalSpend_log1p", "RoomService_log1p", "FoodCourt_log1p", "ShoppingMall_log1p", "Spa_log1p", "VRDeck_log1p", "LuxurySpend", "AmenitiesUsedCount", "GroupSpendTotal", "Age_missing", "IsChild", "AgeBin", "Surname", "FamilySize", "CryoSpendInconsistent", "CryoImpliedBySpend", "HomePlanet_missing", "CryoSleep_missing", "Destination_missing", "VIP_missing", "RoomService_missing", "FoodCourt_missing", "ShoppingMall_missing", "Spa_missing", "VRDeck_missing", "SpendPerAge", "Spa_VRDeck_interaction", "RoomService_FoodCourt_interaction"],
+  "categorical_features": ["Deck", "Side", "Group", "Surname", "AgeBin", "CabinRegion"],
+  "raw_categorical_features": ["HomePlanet", "CryoSleep", "Destination", "VIP"],
+  "proposals": [
+    {"name": "GroupId", "source_columns": ["PassengerId"], "transformation": "split on '_', take gggg prefix as group key", "rationale": "group members travel together with correlated outcomes", "expected_impact": "high"},
+    {"name": "GroupSize", "source_columns": ["PassengerId"], "transformation": "count rows sharing the gggg group", "rationale": "solo vs party travelers differ in transport rate", "expected_impact": "high"},
+    {"name": "IsAlone", "source_columns": ["PassengerId"], "transformation": "1 if GroupSize==1 else 0", "rationale": "solo travelers have distinct outcomes", "expected_impact": "medium"},
+    {"name": "Deck", "source_columns": ["Cabin"], "transformation": "split Cabin on '/', element 0", "rationale": "deck correlates with planet and transport probability", "expected_impact": "high"},
+    {"name": "CabinNum", "source_columns": ["Cabin"], "transformation": "split Cabin on '/', element 1 as int", "rationale": "spatially ordered cabins share fate", "expected_impact": "medium"},
+    {"name": "Side", "source_columns": ["Cabin"], "transformation": "split Cabin on '/', element 2 (P/S)", "rationale": "port vs starboard strongly predictive", "expected_impact": "high"},
+    {"name": "CabinRegion", "source_columns": ["Cabin"], "transformation": "floor(CabinNum/300)", "rationale": "coarse contiguous cabin regions reduce noise", "expected_impact": "medium"},
+    {"name": "TotalSpend", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "row-wise sum, NaN as 0", "rationale": "aggregate spend strongly separates transport classes", "expected_impact": "high"},
+    {"name": "NoSpend", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "1 if total spend == 0 else 0", "rationale": "zero spend co-occurs with CryoSleep and high transport rate", "expected_impact": "high"},
+    {"name": "TotalSpend_log1p", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "log1p of total spend", "rationale": "spend is heavily right-skewed", "expected_impact": "medium"},
+    {"name": "amenity_log1p", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "log1p per amenity (NaN as 0)", "rationale": "per-amenity skew correction", "expected_impact": "high"},
+    {"name": "LuxurySpend", "source_columns": ["RoomService", "Spa", "VRDeck"], "transformation": "sum of personal-luxury amenities", "rationale": "luxury spend correlates negatively with transport", "expected_impact": "medium"},
+    {"name": "AmenitiesUsedCount", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "count of amenities with spend>0", "rationale": "breadth of consumption signals awake/active passengers", "expected_impact": "medium"},
+    {"name": "GroupSpendTotal", "source_columns": ["PassengerId", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "groupby group, sum of TotalSpend", "rationale": "group-level activity reinforces correlated outcomes", "expected_impact": "medium"},
+    {"name": "AgeBin", "source_columns": ["Age"], "transformation": "pd.cut into ordinal life-stage buckets", "rationale": "non-linear age effect", "expected_impact": "medium"},
+    {"name": "IsChild", "source_columns": ["Age"], "transformation": "1 if Age<13 else 0", "rationale": "children spend little and transport differently", "expected_impact": "medium"},
+    {"name": "Surname", "source_columns": ["Name"], "transformation": "last whitespace token of Name", "rationale": "surname identifies family units", "expected_impact": "medium"},
+    {"name": "FamilySize", "source_columns": ["Name"], "transformation": "count rows sharing surname", "rationale": "family-level transport correlation", "expected_impact": "medium"},
+    {"name": "CryoSpendInconsistent", "source_columns": ["CryoSleep", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "1 if CryoSleep and spend>0", "rationale": "violates cryo-implies-zero-spend, flags inconsistency", "expected_impact": "medium"},
+    {"name": "CryoImpliedBySpend", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "1 if total spend == 0", "rationale": "zero spend implies cryosleep, recovers missing CryoSleep", "expected_impact": "high"},
+    {"name": "missing_indicators", "source_columns": ["Age", "HomePlanet", "CryoSleep", "Destination", "VIP", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"], "transformation": "1 if NaN else 0 per column", "rationale": "preserve non-random missingness signal", "expected_impact": "low"},
+    {"name": "SpendPerAge", "source_columns": ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck", "Age"], "transformation": "TotalSpend/(Age+1)", "rationale": "normalizes spend by life stage", "expected_impact": "medium"},
+    {"name": "Spa_VRDeck_interaction", "source_columns": ["Spa", "VRDeck"], "transformation": "log1p(Spa)*log1p(VRDeck)", "rationale": "joint luxury-usage signal", "expected_impact": "medium"},
+    {"name": "RoomService_FoodCourt_interaction", "source_columns": ["RoomService", "FoodCourt"], "transformation": "log1p(RoomService)*log1p(FoodCourt)", "rationale": "joint dining/service activity", "expected_impact": "low"}
+  ]
+}

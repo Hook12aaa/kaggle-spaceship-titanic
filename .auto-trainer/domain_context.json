@@ -1,0 +1,33 @@
+{
+  "inferred_domain": "interstellar passenger transport (synthetic Kaggle Spaceship Titanic, binary classification)",
+  "column_semantics": {
+    "PassengerId": "Unique passenger id encoded gggg_pp where gggg is the travel-group number and pp is the index within the group; shared gggg means people travel together.",
+    "HomePlanet": "Departure planet (Earth, Europa, or Mars) reflecting origin population and socioeconomic profile.",
+    "CryoSleep": "Whether the passenger elected suspended animation, which confines them to their cabin for the voyage.",
+    "Cabin": "Cabin assignment in deck/num/side format; deck is a letter A-G or T, num is the cabin number, side is P (Port) or S (Starboard).",
+    "Destination": "Destination planet (TRAPPIST-1e, PSO J318.5-22, or 55 Cancri e).",
+    "Age": "Passenger age in years.",
+    "VIP": "Whether the passenger paid for premium VIP service.",
+    "RoomService": "Amount billed at the ship room-service amenity.",
+    "FoodCourt": "Amount billed at the ship food court amenity.",
+    "ShoppingMall": "Amount billed at the ship shopping mall amenity.",
+    "Spa": "Amount billed at the ship spa amenity.",
+    "VRDeck": "Amount billed at the ship virtual-reality deck amenity.",
+    "Name": "Passenger first and last name; surname tends to be shared within a travel group/family.",
+    "Transported": "Target boolean: whether the passenger was transported to an alternate dimension by the spacetime anomaly."
+  },
+  "known_relationships": [
+    "PassengerId encodes group as gggg_pp; passengers sharing gggg travel together and tend to share Cabin, HomePlanet, Destination and surname, with correlated Transported outcomes.",
+    "Cabin decomposes into deck/num/side; deck and side carry signal because the anomaly effect varies by physical location.",
+    "CryoSleep passengers are confined to cabins so they have zero spend across all five amenity columns, and CryoSleep is strongly predictive of Transported.",
+    "The five spending columns are amenity bills; their sum gives total spend, and zero total spend co-occurs with CryoSleep=True.",
+    "HomePlanet correlates with deck and with spending level; Europa passengers concentrate on upper decks and spend more.",
+    "HomePlanet and Destination interact with transport probability.",
+    "Age interacts with outcome and spending; children spend little and have a distinct transport rate.",
+    "Surname extracted from Name clusters with group membership and recovers group ties."
+  ],
+  "external_data_candidates": [],
+  "leakage_risks": [
+    "Group-based aggregates can leak the target if built from the row's own label or test rows; group features must be derived in a train-only, leave-one-out fashion."
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "status": "PASS",
+  "dataset_path": "train.csv",
+  "dataset_mtime": 1644588168.0,
+  "timestamp": "2026-06-28T00:00:00Z",
+  "mitigation_rounds": 0,
+  "domain_context": {
+    "inferred_domain": "interstellar passenger transport (synthetic Kaggle Spaceship Titanic, binary classification)",
+    "column_semantics": {
+      "PassengerId": "Unique passenger id encoded gggg_pp where gggg is the travel-group number and pp is the index within the group; shared gggg means people travel together.",
+      "HomePlanet": "Departure planet (Earth, Europa, or Mars) reflecting origin population and socioeconomic profile.",
+      "CryoSleep": "Whether the passenger elected suspended animation, which confines them to their cabin for the voyage.",
+      "Cabin": "Cabin assignment in deck/num/side format; deck is a letter A-G or T, num is the cabin number, side is P (Port) or S (Starboard).",
+      "Destination": "Destination planet (TRAPPIST-1e, PSO J318.5-22, or 55 Cancri e).",
+      "Age": "Passenger age in years.",
+      "VIP": "Whether the passenger paid for premium VIP service.",
+      "RoomService": "Amount billed at the ship room-service amenity.",
+      "FoodCourt": "Amount billed at the ship food court amenity.",
+      "ShoppingMall": "Amount billed at the ship shopping mall amenity.",
+      "Spa": "Amount billed at the ship spa amenity.",
+      "VRDeck": "Amount billed at the ship virtual-reality deck amenity.",
+      "Name": "Passenger first and last name; surname tends to be shared within a travel group/family.",
+      "Transported": "Target boolean: whether the passenger was transported to an alternate dimension by the spacetime anomaly."
+    },
+    "known_relationships": [
+      "PassengerId encodes group as gggg_pp; passengers sharing gggg travel together and tend to share Cabin, HomePlanet, Destination and surname, with correlated Transported outcomes.",
+      "Cabin decomposes into deck/num/side; deck and side carry signal because the anomaly effect varies by physical location.",
+      "CryoSleep passengers are confined to cabins so they have zero spend across all five amenity columns, and CryoSleep is strongly predictive of Transported.",
+      "The five spending columns are amenity bills; their sum gives total spend, and zero total spend co-occurs with CryoSleep=True.",
+      "HomePlanet correlates with deck and with spending level; Europa passengers concentrate on upper decks and spend more.",
+      "HomePlanet and Destination interact with transport probability.",
+      "Age interacts with outcome and spending; children spend little and have a distinct transport rate.",
+      "Surname extracted from Name clusters with group membership and recovers group ties."
+    ],
+    "external_data_candidates": [],
+    "leakage_risks": [
+      "Group-based aggregates can leak the target if built from the row's own label or test rows; group features must be derived in a train-only, leave-one-out fashion."
+    ]
+  },
+  "checks": {
+    "shape_and_size": {
+      "passed": true,
+      "samples": 8693,
+      "features": 11,
+      "samples_per_feature": 790.27
+    },
+    "data_types": {
+      "passed": true,
+      "columns_checked": 11,
+      "coercion_failures": {},
+      "max_coercion_failure_rate": 0.0
+    },
+    "missing_values": {
+      "passed": true,
+      "columns_with_missing": 11,
+      "mitigations_applied": {
+        "HomePlanet": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.31
+        },
+        "CryoSleep": {
+          "band": "low",
+          "method": "mode_imputer",
+          "missing_pct": 2.5
+        },
+        "Cabin": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.29
+        },
+        "Destination": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.09
+        },
+        "Age": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.06
+        },
+        "VIP": {
+          "band": "low",
+          "method": "mode_imputer",
+          "missing_pct": 2.34
+        },
+        "RoomService": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.08
+        },
+        "FoodCourt": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.11
+        },
+        "ShoppingMall": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.39
+        },
+        "Spa": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.11
+        },
+        "VRDeck": {
+          "band": "low",
+          "method": "median_imputer",
+          "missing_pct": 2.16
+        }
+      }
+    },
+    "target_variable": {
+      "passed": true,
+      "name": "Transported",
+      "dtype": "bool",
+      "missing_pct": 0.0,
+      "class_distribution": {
+        "True": 4378,
+        "False": 4315
+      },
+      "n_classes": 2
+    },
+    "duplicates": {
+      "passed": true,
+      "duplicate_rows": 0,
+      "duplicate_pct": 0.0
+    },
+    "distributions": {
+      "passed": true,
+      "high_skew_columns": [
+        "RoomService",
+        "FoodCourt",
+        "ShoppingMall",
+        "Spa",
+        "VRDeck"
+      ],
+      "zero_variance_columns": [],
+      "near_constant_columns": [
+        "Age"
+      ]
+    },
+    "correlations": {
+      "passed": true,
+      "redundant_pairs": [],
+      "leakage_suspects": [],
+      "high_vif_columns": []
+    },
+    "outliers": {
+      "passed": true,
+      "flagged_rows": 19,
+      "flagged_pct": 0.22
+    }
+  }
+}

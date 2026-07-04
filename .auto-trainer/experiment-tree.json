@@ -1,0 +1,226 @@
+{
+  "primary_metric_key": "accuracy",
+  "metric_direction": "maximize",
+  "nodes": {
+    "exp_000": {
+      "exp_id": "exp_000",
+      "parent": null,
+      "depth": 0,
+      "architecture_class": "linear",
+      "model": "LogisticRegression(C=1.0)",
+      "config_hash": "56dc146f3cd96d25737aea4a8aeef8090eb87c8eb2d040fc8ec10e53dc095f01",
+      "sha": "61dd43ae4b5d8f610176e363f8bb5be9df22a36863ba9d86693a10978a5ca83b",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.797585,
+        "val_accuracy": 0.797585,
+        "train_accuracy": 0.799684
+      },
+      "trainable_params": 62,
+      "worktree_path": ".auto-trainer/worktrees/exp_000/",
+      "eval_verdict": "BASELINE",
+      "review_verdict": "BASELINE"
+    },
+    "lin_d1": {
+      "exp_id": "lin_d1",
+      "parent": "exp_000",
+      "depth": 1,
+      "architecture_class": "linear",
+      "model": "LogisticRegression(C=0.1)",
+      "config_hash": "55162b76287554acc552c98cac0b2b89d817655c45ad3c020c4ddc3ab8775980",
+      "sha": "861c26ecd285889639ea14dd8dae96337067173472be5e9e70cf19401d47798f",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.79356,
+        "val_accuracy": 0.79356,
+        "train_accuracy": 0.79767
+      },
+      "trainable_params": 62,
+      "worktree_path": ".auto-trainer/worktrees/lin_d1/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    },
+    "tree_d1": {
+      "exp_id": "tree_d1",
+      "parent": "exp_000",
+      "depth": 1,
+      "architecture_class": "tree_based",
+      "model": "RandomForest(n=200,d=12,leaf=3)",
+      "config_hash": "423d5df677eb48faecf231eee677af93f00cbf40308ba782c635633d5b8ed3bb",
+      "sha": "08a1573e99f31e64243fadb8cb24815387329b358359d951f4bb19492ef507ec",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.80276,
+        "val_accuracy": 0.80276,
+        "train_accuracy": 0.871153
+      },
+      "trainable_params": 125958,
+      "worktree_path": ".auto-trainer/worktrees/tree_d1/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    },
+    "knn_d1": {
+      "exp_id": "knn_d1",
+      "parent": "exp_000",
+      "depth": 1,
+      "architecture_class": "knn",
+      "model": "KNeighbors(k=20)",
+      "config_hash": "6788673ee597a3a4ff1ee5b1d6fea494dcca0468687f2c5fe62f6232fff030a0",
+      "sha": "a523c768c9e201b3113edca219bc75c7fdca86a1110fef352ea67041248b4e86",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.775158,
+        "val_accuracy": 0.775158,
+        "train_accuracy": 0.795945
+      },
+      "trainable_params": 424194,
+      "worktree_path": ".auto-trainer/worktrees/knn_d1/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    },
+    "lin_d2": {
+      "exp_id": "lin_d2",
+      "parent": "lin_d1",
+      "depth": 2,
+      "architecture_class": "linear",
+      "model": "LogisticRegression(C=10)",
+      "config_hash": "18f0b179f39bd7a816d7e7be9ab69a7032a5e63d4342d322b96fd3579b8c0069",
+      "sha": "cf2cfd6d34c0c09c3ef12359b8470b5494a31bee0c679b05117fe8606fefac69",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.798735,
+        "val_accuracy": 0.798735,
+        "train_accuracy": 0.799971
+      },
+      "trainable_params": 62,
+      "worktree_path": ".auto-trainer/worktrees/lin_d2/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    },
+    "tree_d2": {
+      "exp_id": "tree_d2",
+      "parent": "tree_d1",
+      "depth": 2,
+      "architecture_class": "tree_based",
+      "model": "GradientBoosting(n=200,lr=0.05,d=3)",
+      "config_hash": "06ed97f78005af1f414c80e0028a38759153de5b99fa20b8e4f9b861bbc1a201",
+      "sha": "98a3912ca075b9ebe183cbd73896756331a6337201ed02ebdb27b6e1bc6159f9",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.80046,
+        "val_accuracy": 0.80046,
+        "train_accuracy": 0.824418
+      },
+      "trainable_params": 2994,
+      "worktree_path": ".auto-trainer/worktrees/tree_d2/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    },
+    "tree_d3": {
+      "exp_id": "tree_d3",
+      "parent": "tree_d2",
+      "depth": 3,
+      "architecture_class": "tree_based",
+      "model": "RandomForest(n=150,d=10,leaf=5)",
+      "config_hash": "24806e390a7aa32c5d48866ad77f0a5a1ea95a0b6539f7de24b4f97ae2904476",
+      "sha": "6e877ed3f43e07174316b90850578b4490a2ca7dfb04d29432143329c64984ff",
+      "status": "DONE",
+      "metrics": {
+        "accuracy": 0.79931,
+        "val_accuracy": 0.79931,
+        "train_accuracy": 0.840811
+      },
+      "trainable_params": 54490,
+      "worktree_path": ".auto-trainer/worktrees/tree_d3/",
+      "eval_verdict": "INCONCLUSIVE",
+      "review_verdict": null
+    }
+  },
+  "pareto_front": [
+    "tree_d1",
+    "lin_d2",
+    "tree_d2"
+  ],
+  "pareto_history": [
+    [
+      "exp_000"
+    ],
+    [
+      "exp_000",
+      "tree_d1"
+    ],
+    [
+      "lin_d2",
+      "tree_d1",
+      "tree_d2"
+    ],
+    [
+      "lin_d2",
+      "tree_d1",
+      "tree_d2"
+    ],
+    [
+      "lin_d2",
+      "tree_d1",
+      "tree_d2"
+    ],
+    [
+      "lin_d2",
+      "tree_d1",
+      "tree_d2"
+    ],
+    [
+      "lin_d2",
+      "tree_d1",
+      "tree_d2"
+    ]
+  ],
+  "class_status": {
+    "knn": {
+      "status": "EXHAUSTED",
+      "best": 0.775158,
+      "depth": 1
+    },
+    "linear": {
+      "status": "EXHAUSTED",
+      "best": 0.798735,
+      "depth": 2
+    },
+    "tree_based": {
+      "status": "EXHAUSTED",
+      "best": 0.80276,
+      "depth": 3
+    }
+  },
+  "global_status": "CONVERGED",
+  "winner": {
+    "exp_id": "exp_ensemble",
+    "accuracy": 0.80621,
+    "best_single": {
+      "exp_id": "tree_d1",
+      "accuracy": 0.80276
+    },
+    "ensemble": {
+      "exp_id": "exp_ensemble",
+      "accuracy": 0.80621
+    }
+  },
+  "ensemble": {
+    "exp_id": "exp_ensemble",
+    "architecture_class": "ensemble",
+    "accuracy": 0.80621,
+    "members": [
+      {
+        "exp_id": "tree_d1",
+        "weight": 0.5
+      },
+      {
+        "exp_id": "lin_d2",
+        "weight": 0.5
+      }
+    ],
+    "parent": "tree_d1",
+    "worktree_path": ".auto-trainer/worktrees/exp_ensemble/",
+    "note": "post-convergence Caruana blend, recorded as winner; not an exploration node"
+  }
+}
